@@ -1,8 +1,10 @@
 import React from "react";
-import type { Point, Equation } from "../../../type.ts";
+import type { Point, Equation, IntersectionPoint } from "../../../type.ts";
 import DrawingOptions from "./DrawingOptions";
 import EquationList from "./EquationList";
 import PointList from "./PointList";
+import IntersectionPointList from "./IntersectionsList.tsx";
+import CollapsibleSection from "./Collapsible";
 
 interface RightSidebarProps {
   equationData: Equation[];
@@ -27,6 +29,15 @@ interface RightSidebarProps {
   setSelectedPoints: React.Dispatch<React.SetStateAction<Point[]>>;
   handleFindIntersections: () => void;
   handleClearIntersections: () => void;
+  IntersectionPoints: IntersectionPoint[];
+  setIntersectionPoints: React.Dispatch<React.SetStateAction<IntersectionPoint[]>>;
+  xMin: number;
+  xMax: number;
+  numPoints: number;
+  setXMin: React.Dispatch<React.SetStateAction<number>>;
+  setXMax: React.Dispatch<React.SetStateAction<number>>;
+  setNumPoints: React.Dispatch<React.SetStateAction<number>>;
+  isLoading: boolean;
 }
 
 const RightSidebar: React.FC<RightSidebarProps> = (props) => {
@@ -52,7 +63,16 @@ const RightSidebar: React.FC<RightSidebarProps> = (props) => {
     setAllowCircle,
     setSelectedPoints,
     handleFindIntersections,
-    handleClearIntersections
+    handleClearIntersections,
+    IntersectionPoints,
+    setIntersectionPoints,
+    xMax,
+    xMin,
+    numPoints,
+    setXMax,
+    setXMin,
+    setNumPoints,
+    isLoading
   } = props;
 
   return (
@@ -63,40 +83,59 @@ const RightSidebar: React.FC<RightSidebarProps> = (props) => {
         borderLeft: "1px solid #ccc",
         paddingLeft: "10px",
         height: "690px",
+        overflowY: "auto",
       }}
     >
-      <button onClick={handleFindIntersections}>Find Intersections</button>
-      <button onClick={handleClearIntersections}>
-          Clear Intersections
-      </button>
-      <DrawingOptions
-        allowLine={allowLine}
-        setAllowLine={setAllowLine}
-        allowCurve={allowCurve}
-        setAllowCurve={setAllowCurve}
-        allowCircle={allowCircle}
-        setAllowCircle={setAllowCircle}
-        setSelectedPoints={setSelectedPoints}
-      />
+      <CollapsibleSection title="Intersections">
+        <IntersectionPointList
+          points={IntersectionPoints}
+          setPoints={setIntersectionPoints}
+          xMax={xMax}
+          xMin={xMin}
+          numPoints={numPoints}
+          setXMax={setXMax}
+          setXMin={setXMin}
+          setNumPoints={setNumPoints}
+          handleClearIntersections={handleClearIntersections}
+          handleFindIntersections={handleFindIntersections}
+          isLoading={isLoading}
+        />
+      </CollapsibleSection>
 
-      <EquationList
-        equations={equationData}
-        setEquations={setEquationData}
-        highlighted={highlightedEquationIds}
-        setHighlighted={setHighlightedEquationIds}
-        hidden={hiddenEquationIds}
-        setHidden={setHiddenEquationIds}
-      />
+      <CollapsibleSection title="Drawing Options">
+        <DrawingOptions
+          allowLine={allowLine}
+          setAllowLine={setAllowLine}
+          allowCurve={allowCurve}
+          setAllowCurve={setAllowCurve}
+          allowCircle={allowCircle}
+          setAllowCircle={setAllowCircle}
+          setSelectedPoints={setSelectedPoints}
+        />
+      </CollapsibleSection>
 
-      <PointList
-        points={points}
-        setPoints={setPoints}
-        highlighted={highlightedPointIndices}
-        setHighlighted={setHighlightedPointIndices}
-        hidden={hiddenPointIndices}
-        setHidden={setHiddenPointIndices}
-        clearPoints={clearPoints}
-      />
+      <CollapsibleSection title="Equations">
+        <EquationList
+          equations={equationData}
+          setEquations={setEquationData}
+          highlighted={highlightedEquationIds}
+          setHighlighted={setHighlightedEquationIds}
+          hidden={hiddenEquationIds}
+          setHidden={setHiddenEquationIds}
+        />
+      </CollapsibleSection>
+
+      <CollapsibleSection title="Points">
+        <PointList
+          points={points}
+          setPoints={setPoints}
+          highlighted={highlightedPointIndices}
+          setHighlighted={setHighlightedPointIndices}
+          hidden={hiddenPointIndices}
+          setHidden={setHiddenPointIndices}
+          clearPoints={clearPoints}
+        />
+      </CollapsibleSection>
     </div>
   );
 };

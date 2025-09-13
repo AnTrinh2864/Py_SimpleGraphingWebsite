@@ -23,28 +23,28 @@ const PointList: React.FC<PointListProps> = ({
 }) => {
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <h3>Points</h3>
-        <button
-          onClick={clearPoints}
-          style={{
-            marginLeft: "10px",
-            color: "black",
-            background: "grey",
-            border: "none",
-            borderRadius: "3px",
-            cursor: "pointer",
-            padding: "2px 6px",
-          }}
-          title="Delete All Points"
-        >
-          <FaTrash />
-        </button>
-      </div>
-
       {points.length === 0 ? (
         <p>No points added</p>
       ) : (
+        <div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+            <button
+              onClick={clearPoints}
+              style={{
+                alignItems:"end",
+                marginRight: "5px",
+                color: "black",
+                background: "grey",
+                border: "none",
+                borderRadius: "3px",
+                cursor: "pointer",
+                padding: "2px 6px",
+              }}
+              title="Delete All Points"
+            >
+              <FaTrash />
+            </button>
+          </div>
         <ul>
           {points.map((p, idx) => (
             <li
@@ -100,6 +100,7 @@ const PointList: React.FC<PointListProps> = ({
             </li>
           ))}
         </ul>
+        </div>
       )}
     </div>
   );

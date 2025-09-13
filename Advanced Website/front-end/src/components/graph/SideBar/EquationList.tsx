@@ -27,28 +27,27 @@ const EquationList: React.FC<EquationListProps> = ({
 
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <h3>Equations</h3>
-        <button
-          onClick={clearEquations}
-          style={{
-            marginLeft: "10px",
-            color: "black",
-            background: "grey",
-            border: "none",
-            borderRadius: "3px",
-            cursor: "pointer",
-            padding: "4px 6px",
-          }}
-          title="Delete All Equations"
-        >
-          <FaTrash />
-        </button>
-      </div>
-
       {equations.length === 0 ? (
         <p>No equations plotted</p>
       ) : (
+        <div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+            <button
+              onClick={clearEquations}
+              style={{
+                marginLeft: "10px",
+                color: "black",
+                background: "grey",
+                border: "none",
+                borderRadius: "3px",
+                cursor: "pointer",
+                padding: "4px 6px",
+              }}
+              title="Delete All Equations"
+            >
+              <FaTrash />
+            </button>
+          </div>
         <ul>
           {equations.map((eq) => (
             <li
@@ -105,6 +104,7 @@ const EquationList: React.FC<EquationListProps> = ({
             </li>
           ))}
         </ul>
+        </div>
       )}
     </div>
   );

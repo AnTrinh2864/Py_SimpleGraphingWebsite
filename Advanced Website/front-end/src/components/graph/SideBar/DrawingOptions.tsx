@@ -22,8 +22,6 @@ const DrawingOptions: React.FC<DrawingOptionsProps> = ({
 }) => {
   return (
     <div style={{ marginBottom: "15px" }}>
-      <h3>Drawing Options</h3>
-
       {/* Line */}
       <label style={{ display: "block", marginBottom: "5px" }}>
         <input

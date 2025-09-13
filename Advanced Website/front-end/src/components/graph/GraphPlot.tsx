@@ -25,18 +25,35 @@ const GraphPlot: React.FC = () => {
   const [allowCurve, setAllowCurve] = useState(false);
   const [allowCircle, setAllowCircle] = useState(false);
   const [intersectionPoints, setIntersectionPoints] = useState<IntersectionPoint[]>([]);
+  const [xMin, setXMin] = useState(-10);
+  const [xMax, setXMax] = useState(10);
+  const [numPoints, setNumPoints] = useState(5000);
+
+  // ✅ loading state
+  const [loading, setLoading] = useState(false);
+
   const handleFindIntersections = async () => {
-    const data = await fetchIntersections(equationData);
-    if (data) {
-      setIntersectionPoints(data);
-    } else {
-      console.log("Fetched NULL")
-    }
+    setLoading(true); // show overlay
+      let submitInfo = {
+        equations: equationData,
+        x_min: xMin,
+        x_max: xMax,
+        num_points: numPoints
+      };
+      const data = await fetchIntersections(submitInfo);
+      if (data) {
+        setIntersectionPoints(data);
+        setLoading(false)
+      } else {
+        console.log("Fetched NULL");
+        setLoading(false)
+      }
   };
 
   const handleClearIntersections = () => {
     setIntersectionPoints([]);
   };
+
   const { plotRef } = usePlotly({
     points,
     setPoints,
@@ -62,7 +79,11 @@ const GraphPlot: React.FC = () => {
   const plotEquation = async () => {
     try {
       const eqData = await plotEquationAPI(equation);
-      const newEq: Equation[] = eqData.map((eq) => ({ ...eq, id: crypto.randomUUID(), name: "y = " + eq.name }));
+      const newEq: Equation[] = eqData.map((eq) => ({
+        ...eq,
+        id: crypto.randomUUID(),
+        name: "y = " + eq.name
+      }));
       setEquationData((prev) => [...prev, ...newEq]);
       setEquation("");
     } catch (err: any) {
@@ -78,7 +99,8 @@ const GraphPlot: React.FC = () => {
     setHighlightedPointIndices([]);
   };
 
-  const addPoint = (x: number, y: number) => setPoints((prev) => [...prev, { x, y }]);
+  const addPoint = (x: number, y: number) =>
+    setPoints((prev) => [...prev, { x, y }]);
 
   return (
     <div style={{ display: "flex", position: "relative" }}>
@@ -119,11 +141,20 @@ const GraphPlot: React.FC = () => {
         setAllowLine={setAllowLine}
         allowCurve={allowCurve}
         setAllowCurve={setAllowCurve}
-        allowCircle={allowCircle}         // ✅ pass circle props
+        allowCircle={allowCircle}         
         setAllowCircle={setAllowCircle}
         setSelectedPoints={setSelectedPoints}
         handleClearIntersections={handleClearIntersections}
         handleFindIntersections={handleFindIntersections}
+        IntersectionPoints={intersectionPoints}
+        setIntersectionPoints={setIntersectionPoints}
+        xMax={xMax}
+        xMin={xMin}
+        numPoints={numPoints}
+        setXMax={setXMax}
+        setXMin={setXMin}
+        setNumPoints={setNumPoints}
+        isLoading={loading}
       />
     </div>
   );

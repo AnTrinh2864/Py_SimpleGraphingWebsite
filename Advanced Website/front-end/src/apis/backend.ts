@@ -159,13 +159,19 @@ export const fitCircle = async (points: Point[]): Promise<Equation> => {
 };
 
 
+interface IntersectionsRequest {
+  equations: Equation[];
+  x_min: number;
+  x_max: number;
+  num_points: number;
+}
+
 export const fetchIntersections = async (
-  equations: Equation[]
+  payload: IntersectionsRequest
 ): Promise<IntersectionPoint[]> => {
   try {
-    const res = await api.post("/intersections", { equations });
-    console.log(res.data.points)
-    return res.data.points; // { points: [...] }
+    const res = await api.post("/intersections", payload);
+    return res.data.points;
   } catch (err: any) {
     throw new Error(err?.message || "Failed to fetch intersections");
   }
