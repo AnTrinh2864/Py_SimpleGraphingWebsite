@@ -7,3 +7,5 @@ and help you find intersecting points.
 
 Update: 8/28/2025 Version 1.0
 Update: 9/12/2025 Added the advanced version of my simple graphing website. Check Advanced Website folder.
+Update: 9/13/2025 Please check my Interactive Graphing Website for the new version of this project. This respository will not be updated anymore.
+
